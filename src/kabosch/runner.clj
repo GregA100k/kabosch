@@ -1,5 +1,6 @@
 (ns kabosch.runner
   (:require [kabosch.core :refer :all]
+            [kabosch.value :refer :all]
             [clojure.java.io :as io]))
 
 (def oneatom (atom {}))
@@ -19,6 +20,7 @@
 (def filename "../data/dev.csv")
 (def count-filename "../data/dev_numeric_100.csv")
 ;(def count-filename "../data/train_numeric.csv")
+(def value-count-filename "../data/numeric_value_counts.txt")
 
 
 (defn read-file-data [f filename a k]
@@ -33,7 +35,8 @@
 ;; atom to store the result in
 ;; column heading to count
 (with-open [rdr (reader filename)]
-  (f (line-seq rdr) k)
+  ;(f (line-seq rdr) k)
+  (f (take 100 (line-seq rdr)) k)
 ))
 (defn read-file-data-3 [f filename k r]
 ;; function to process each row
@@ -76,5 +79,9 @@
        "L0_S9_F190" "L0_S9_F195" "L0_S9_F200"
                    ])
   ;(doall (map #(println (counts-for-key %)) column-keys))
-  (println (read-file-data-2 count-all-results-values count-filename "Response"))
+  ;(println (read-file-data-2 count-all-results-values count-filename "Response"))
+  (def counts (read-string (slurp value-count-filename)))
+  ;(println (first counts))
+
+  (println (sort-by (fn [x] (get x 2)) (filter #(not (= 'Id (get % 0))) (filter #(> (get % 2) 0.1)(reduce into [] (map calculate-values-with-key counts))))))
 )
