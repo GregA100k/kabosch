@@ -40,11 +40,18 @@
       (is (= [3.4 1/4] (calculate-value 3.4 ones zeros)))
     ))
 )
-(def example2 ["L1_S24_F1637" {1 {0.299 1, "NULL" 2}, 0 {0.354 1, "NULL" 95}}])
+(def example2 ["L1_S24_F1637" {1 {0.299 1, 'NULL 2}, 0 {0.354 1, 'NULL 95}}])
 
 (deftest calculate-all-values
   (testing "iiii"
-    (is (= (set '(["NULL" 2/97] [0.299 1] [0.354 0]))
+    (is (= (set '([NULL 2/97] [0.299 1] [0.354 0]))
            (set (calculate-values example2))))
   )
 )
+
+
+(deftest  display-value-range
+  (testing "value list"
+    (is (= [['NULL [95 2]] [0.299 [0 1]] [0.354 [1 0]]]
+           (ordered-value-list (first (rest example2)))))
+))

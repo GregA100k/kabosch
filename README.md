@@ -14,5 +14,8 @@ Things to try next
 * look at the ranges of valus for different features to see if there
   are combinations of attribute values that may go together
 * create a routine that pulls out display the value distribution
-  for a specified feature
+  for a specified feature  *created a way to get a sorted list of 
+  values, at least for numerics.*
+* build a way to test ranges of numeric values to find values more
+  likely to indicate failures.
 

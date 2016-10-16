@@ -53,3 +53,15 @@
         zero-map (get m 0)
         the-keys (all-keys [k m])]
    (map #(calculate-value-with-key k % one-map zero-map) the-keys)))
+
+
+(defn ordered-value-list [m]
+  (let [zeros (reduce (fn [m [k v]] (assoc m k [v 0])) {} (get m 0))
+        ones  (reduce (fn [m [k v]] (assoc m k [0 v])) {} (get m 1))
+        map-of-totals (reduce (fn [m [k v]]
+              (let [zero-map (get m k [0 0])]
+                (assoc m k (vec (map + zero-map v))))) zeros ones)
+       ]
+    ;(vec (sort-by #(.toString (first %)) (reduce conj [] map-of-totals)))
+    (vec (sort-by (fn [[x _ ]] (if (= 'NULL x) nil x)) (reduce conj [] map-of-totals)))
+))

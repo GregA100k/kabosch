@@ -20,7 +20,7 @@
 (def filename "../data/dev.csv")
 (def count-filename "../data/dev_numeric_100.csv")
 ;(def count-filename "../data/train_numeric.csv")
-(def value-count-filename "../data/numeric_value_counts.txt")
+(def value-count-filename "../data/numeric_value_counts_100.txt")
 
 
 (defn read-file-data [f filename a k]
@@ -83,5 +83,16 @@
   (def counts (read-string (slurp value-count-filename)))
   ;(println (first counts))
 
-  (println (sort-by (fn [x] (get x 2)) (filter #(not (= 'Id (get % 0))) (filter #(> (get % 2) 0.1)(reduce into [] (map calculate-values-with-key counts))))))
+;;  (println (sort-by (fn [x] (get x 2)) (filter #(not (= 'Id (get % 0))) (filter #(> (get % 2) 0.1)(reduce into [] (map calculate-values-with-key counts))))))
+
+  ;(println (get counts 'L1_S24_F1632))
+  ;(println (ordered-value-list (get counts 'L1_S24_F1632)))
+  (def l1_value_list (ordered-value-list (get counts 'L1_S24_F1838)))
+  (println l1_value_list)
+
+  (let [zeros-and-ones  (reduce (fn [t [_ v]] (map + t v)) [0 0] l1_value_list)
+        [zeros ones] zeros-and-ones
+       ]
+    (println zeros-and-ones (/ ones zeros ))
+)
 )
